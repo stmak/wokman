@@ -3,6 +3,7 @@ import bundleTwoPersonImage from "@/assets/bundle-two-person-clean.jpg";
 import bundleFourPersonImage from "@/assets/bundle-four-person.jpg";
 
 type BundleSeed = {
+  id: string;
   name: string;
   category: "Bundles";
   price: number;
@@ -18,6 +19,7 @@ type BundleSeed = {
 
 export const bundleMeals: BundleSeed[] = [
   {
+    id: "bundle-solo-feast",
     name: "Golden Fortune Solo Feast",
     category: "Bundles",
     price: 15.8,
@@ -32,6 +34,7 @@ export const bundleMeals: BundleSeed[] = [
     includes: ["Chicken Chow Mein", "Egg Fried Rice", "2 Vegetable Spring Rolls"],
   },
   {
+    id: "bundle-supper-for-two",
     name: "Golden Fortune Supper for Two",
     category: "Bundles",
     price: 31.8,
@@ -51,6 +54,7 @@ export const bundleMeals: BundleSeed[] = [
     ],
   },
   {
+    id: "bundle-banquet-for-four",
     name: "Golden Fortune Banquet for Four",
     category: "Bundles",
     price: 63.5,
@@ -75,3 +79,5 @@ export const bundleMeals: BundleSeed[] = [
 ];
 
 export const bundleImageMap = Object.fromEntries(bundleMeals.map((bundle) => [bundle.name, bundle.image]));
+
+export type BundleMeal = (typeof bundleMeals)[number];

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { bundleMeals } from "@/data/bundles";
 import { menu } from "@/data/menu";
 
 type CartItem = {
@@ -74,7 +75,7 @@ export const TakeawayProvider = ({ children }: { children: React.ReactNode }) =>
 
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = cart.reduce((sum, item) => {
-      const dish = menu.find((entry) => entry.id === item.dishId);
+      const dish = [...menu, ...bundleMeals].find((entry) => entry.id === item.dishId);
       return sum + (dish?.price ?? 0) * item.quantity;
     }, 0);
 

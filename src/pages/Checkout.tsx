@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { TakeawayHeader } from "@/components/TakeawayHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { bundleMeals } from "@/data/bundles";
 import { menu } from "@/data/menu";
 import { useTakeaway } from "@/context/TakeawayContext";
 import { useState } from "react";
@@ -14,7 +15,7 @@ const Checkout = () => {
 
   const cartLines = cart
     .map((item) => {
-      const dish = menu.find((entry) => entry.id === item.dishId);
+      const dish = [...menu, ...bundleMeals].find((entry) => entry.id === item.dishId);
       if (!dish) return null;
       return { ...dish, quantity: item.quantity, lineTotal: dish.price * item.quantity };
     })
