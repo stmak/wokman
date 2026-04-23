@@ -2,9 +2,11 @@ import { useMemo, useState } from "react";
 import { Crown, Flame, ScrollText, ShieldCheck, Star } from "lucide-react";
 import heroImage from "@/assets/takeaway-hero.jpg";
 import { DishCard } from "@/components/DishCard";
+import { SiteFooter } from "@/components/SiteFooter";
 import { TakeawayHeader } from "@/components/TakeawayHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { bundleMeals } from "@/data/bundles";
 import { useTakeaway } from "@/context/TakeawayContext";
 import { categories, menu, popularityReference } from "@/data/menu";
 import { cn } from "@/lib/utils";
@@ -37,9 +39,9 @@ const Index = () => {
         <section className="border-b border-border/60">
           <div className="container grid gap-10 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:py-16">
             <div className="space-y-6">
-              <p className="text-sm uppercase tracking-[0.32em] text-primary">Golden Wok House • United Kingdom</p>
+              <p className="text-sm uppercase tracking-[0.32em] text-primary">Golden Fortune • United Kingdom</p>
               <h1 className="max-w-2xl font-display text-5xl leading-tight text-foreground md:text-7xl">
-                Classical Chinese takeaway, served with warmth and a proper Friday-night flourish.
+                Refined Chinese takeaway classics, dressed for a polished Friday-night feast.
               </h1>
               <p className="max-w-xl text-lg leading-8 text-muted-foreground">
                 A tasteful, traditional menu of British Chinese takeaway favourites — from chow mein and crispy duck to sweet and sour classics, with 100 dishes ready for the table.
@@ -121,6 +123,42 @@ const Index = () => {
           </div>
         </section>
 
+        <section className="border-b border-border/60 bg-secondary/20 py-12">
+          <div className="container space-y-6">
+            <div>
+              <p className="text-sm uppercase tracking-[0.32em] text-primary">Bundles</p>
+              <h2 className="mt-2 font-display text-5xl text-foreground">Curated set meals for one, two or four</h2>
+              <p className="mt-3 max-w-3xl text-muted-foreground">Each bundle spells out exactly what is included, with AI-crafted imagery to make the spread feel generous before anyone even opens the bag.</p>
+            </div>
+            <div className="grid gap-6 lg:grid-cols-3">
+              {bundleMeals.map((bundle) => (
+                <Card key={bundle.name} className="overflow-hidden border-border/60 bg-card/95 shadow-soft">
+                  <img src={bundle.image} alt={bundle.imageAlt} loading="lazy" width={1920} height={1080} className="aspect-[4/3] w-full object-cover" />
+                  <CardContent className="space-y-4 p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.28em] text-primary">{bundle.badge}</p>
+                        <p className="mt-2 font-display text-3xl text-foreground">{bundle.name}</p>
+                      </div>
+                      <p className="whitespace-nowrap font-display text-2xl text-primary">£{bundle.price.toFixed(2)}</p>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{bundle.description}</p>
+                    <p className="text-sm font-medium text-foreground">{bundle.serves}</p>
+                    <div>
+                      <p className="text-sm uppercase tracking-[0.24em] text-muted-foreground">Includes</p>
+                      <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
+                        {bundle.includes.map((item) => (
+                          <li key={item}>• {item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="menu" className="container py-12 md:py-16">
           <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
@@ -194,8 +232,8 @@ const Index = () => {
               },
               {
                 icon: ShieldCheck,
-                title: "Static-site ready",
-                text: "Built entirely in the frontend with static routing so it is ready for GitHub Pages hosting.",
+                title: "House bundles",
+                text: "Set meals for one, two or four make ordering simpler when you want the classics picked for you.",
               },
             ].map((feature) => (
               <Card key={feature.title} className="border-border/60 bg-card/90 shadow-soft">
@@ -209,6 +247,7 @@ const Index = () => {
           </div>
         </section>
       </main>
+      <SiteFooter />
     </div>
   );
 };

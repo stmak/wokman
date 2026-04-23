@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, MessageSquareText, Wallet } from "lucide-react";
+import { SiteFooter } from "@/components/SiteFooter";
 import { TakeawayHeader } from "@/components/TakeawayHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -128,6 +129,7 @@ const Checkout = () => {
           </div>
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import { resolveDishImage, resolveDishImageAlt } from "@/lib/menu-images";
+
 export type MenuCategory =
   | "Starters"
   | "Soups"
@@ -182,8 +184,18 @@ export const categories: MenuCategory[] = [
 export const menu: Dish[] = menuSeeds.map((dish) => ({
   ...dish,
   id: slugify(dish.name),
-  image: makeDishImage(dish.name, dish.category, dish.popular),
-  imageAlt: `${dish.name} illustrated menu artwork`,
+  image: resolveDishImage({
+    ...dish,
+    id: slugify(dish.name),
+    image: makeDishImage(dish.name, dish.category, dish.popular),
+    imageAlt: `${dish.name} illustrated menu artwork`,
+  }),
+  imageAlt: resolveDishImageAlt({
+    ...dish,
+    id: slugify(dish.name),
+    image: makeDishImage(dish.name, dish.category, dish.popular),
+    imageAlt: `${dish.name} illustrated menu artwork`,
+  }),
 }));
 export const popularityReference = "Popular badges are based on recurring UK takeaway favourites widely highlighted in British ordering roundups and menus, including Just Eat's long-running order trends reported by The Independent, plus staple dishes repeatedly featured by UK takeaway menus such as chow mein, sweet and sour chicken, egg fried rice, black bean dishes and crispy chilli beef.";
 function slugify(value: string) {

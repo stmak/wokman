@@ -1,5 +1,6 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingBag, Sparkles } from "lucide-react";
+import logoMark from "@/assets/golden-fortune-mark.png";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useTakeaway } from "@/context/TakeawayContext";
@@ -30,12 +31,12 @@ export const TakeawayHeader = () => {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/85">
       <div className="container flex h-20 items-center justify-between gap-6">
         <Link to="/" className="flex min-w-0 items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border/70 bg-panel shadow-lacquer">
-            <span className="font-display text-lg text-primary">福</span>
+          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border/70 bg-panel p-2 shadow-lacquer">
+            <img src={logoMark} alt="Golden Fortune logo mark" width={1024} height={1024} className="h-full w-full object-contain" />
           </div>
           <div className="min-w-0">
-            <p className="font-display text-xl text-foreground">Golden Wok House</p>
-            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Classical Chinese takeaway</p>
+            <p className="font-display text-xl text-foreground">Golden Fortune</p>
+            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Modern Chinese takeaway</p>
           </div>
         </Link>
 
