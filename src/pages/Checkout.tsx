@@ -33,9 +33,14 @@ const Checkout = () => {
     orderParts.push(`£${totalPrice.toFixed(2)}`);
 
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(orderParts.join(", "))}`;
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     setSubmitted(true);
     clearCart();
+
+    const popup = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+    if (!popup || popup.closed || typeof popup.closed === "undefined") {
+      window.location.assign(whatsappUrl);
+    }
   };
 
   return (
