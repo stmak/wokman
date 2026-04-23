@@ -7,12 +7,16 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1.5rem",
       screens: {
         "2xl": "1400px",
       },
     },
     extend: {
+      fontFamily: {
+        display: ["Cormorant Garamond", "serif"],
+        body: ["Manrope", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,6 +51,14 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        panel: {
+          DEFAULT: "hsl(var(--panel))",
+          foreground: "hsl(var(--panel-foreground))",
+        },
+        highlight: {
+          DEFAULT: "hsl(var(--highlight))",
+          foreground: "hsl(var(--highlight-foreground))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -63,22 +75,22 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        soft: "0 10px 30px -20px hsl(var(--foreground) / 0.22)",
+        lacquer: "0 24px 60px -28px hsl(var(--primary) / 0.45)",
+        glow: "0 16px 40px -24px hsl(var(--primary) / 0.6)",
+      },
+      backgroundImage: {
+        "hero-overlay": "linear-gradient(180deg, transparent 12%, hsl(var(--foreground) / 0.72) 100%)",
+      },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {

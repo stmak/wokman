@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingBag, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -6,12 +6,25 @@ import { useTakeaway } from "@/context/TakeawayContext";
 
 const navItems = [
   { label: "Home", to: "/" },
-  { label: "Menu", to: "/#menu" },
   { label: "Checkout", to: "/checkout" },
 ];
 
 export const TakeawayHeader = () => {
   const { totalItems, unlocked } = useTakeaway();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const goToMenu = () => {
+    if (location.pathname !== "/") {
+      navigate("/");
+      window.setTimeout(() => {
+        document.getElementById("menu")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 60);
+      return;
+    }
+
+    document.getElementById("menu")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/85">
@@ -27,30 +40,27 @@ export const TakeawayHeader = () => {
         </Link>
 
         <nav className="hidden items-center gap-2 md:flex">
-          {navItems.map((item) => {
-            if (item.to.includes("#")) {
-              return (
-                <a key={item.label} href={item.to} className="inline-flex h-11 items-center rounded-full px-4 text-sm text-muted-foreground transition-all hover:text-foreground">
-                  {item.label}
-                </a>
-              );
-            }
-
-            return (
-              <NavLink
-                key={item.label}
-                to={item.to}
-                className={({ isActive }) =>
-                  cn(
-                    "inline-flex h-11 items-center rounded-full px-4 text-sm transition-all",
-                    isActive ? "bg-secondary text-secondary-foreground shadow-soft" : "text-muted-foreground hover:text-foreground",
-                  )
-                }
-              >
-                {item.label}
-              </NavLink>
-            );
-          })}
+          {navItems.map((item) => (
+            <NavLink
+              key={item.label}
+              to={item.to}
+              className={({ isActive }) =>
+                cn(
+                  "inline-flex h-11 items-center rounded-full px-4 text-sm transition-all",
+                  isActive ? "bg-secondary text-secondary-foreground shadow-soft" : "text-muted-foreground hover:text-foreground",
+                )
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+          <button
+            type="button"
+            onClick={goToMenu}
+            className="inline-flex h-11 items-center rounded-full px-4 text-sm text-muted-foreground transition-all hover:text-foreground"
+          >
+            Menu
+          </button>
         </nav>
 
         <div className="flex items-center gap-3">
