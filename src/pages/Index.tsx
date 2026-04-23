@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Crown, Flame, ScrollText, ShieldCheck, Star } from "lucide-react";
+import { Crown, Flame, LockKeyhole, Plus, ScrollText, ShieldCheck, Star } from "lucide-react";
 import heroImage from "@/assets/takeaway-hero.jpg";
 import { DishCard } from "@/components/DishCard";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -132,7 +132,7 @@ const Index = () => {
             </div>
             <div className="grid gap-6 lg:grid-cols-3">
               {bundleMeals.map((bundle) => (
-                <Card key={bundle.name} className="overflow-hidden border-border/60 bg-card/95 shadow-soft">
+                <Card key={bundle.id} className="overflow-hidden border-border/60 bg-card/95 shadow-soft">
                   <img src={bundle.image} alt={bundle.imageAlt} loading="lazy" width={1920} height={1080} className="aspect-[4/3] w-full object-cover" />
                   <CardContent className="space-y-4 p-6">
                     <div className="flex items-start justify-between gap-4">
@@ -151,6 +151,13 @@ const Index = () => {
                           <li key={item}>• {item}</li>
                         ))}
                       </ul>
+                    </div>
+                    <div className="flex items-center justify-between gap-3 pt-2">
+                      <span className="text-sm text-muted-foreground">{unlocked ? "Bundle ready to add" : "Unlock with VIP code first"}</span>
+                      <Button variant={unlocked ? "hero" : "locked"} onClick={unlocked ? () => addToCart(bundle.id) : handleLockedAdd}>
+                        {unlocked ? <Plus className="h-4 w-4" /> : <LockKeyhole className="h-4 w-4" />}
+                        Add to cart
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
