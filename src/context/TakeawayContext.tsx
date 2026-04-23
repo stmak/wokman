@@ -19,6 +19,7 @@ type TakeawayContextValue = {
 };
 
 const STORAGE_KEY = "golden-wok-takeaway-state";
+export const VIP_ACCESS_CODE = "VIPtest";
 
 const TakeawayContext = createContext<TakeawayContextValue | null>(null);
 
@@ -68,7 +69,7 @@ export const TakeawayProvider = ({ children }: { children: React.ReactNode }) =>
     const clearCart = () => setCart([]);
 
     const unlockWithCode = (code: string) => {
-      const success = code.trim() === "VIPtest";
+      const success = code.trim() === VIP_ACCESS_CODE;
       if (success) setUnlocked(true);
       return success;
     };

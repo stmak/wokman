@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { bundleMeals } from "@/data/bundles";
 import { menu } from "@/data/menu";
-import { useTakeaway } from "@/context/TakeawayContext";
+import { useTakeaway, VIP_ACCESS_CODE } from "@/context/TakeawayContext";
 import { useState } from "react";
+
+const WHATSAPP_NUMBER = "447766628285";
 
 const Checkout = () => {
   const { cart, totalPrice, clearCart, removeFromCart, addToCart } = useTakeaway();
@@ -22,6 +24,16 @@ const Checkout = () => {
     .filter(Boolean);
 
   const handleCheckout = () => {
+    const orderParts = [VIP_ACCESS_CODE];
+
+    cartLines.forEach((dish) => {
+      orderParts.push(dish.name, String(dish.quantity));
+    });
+
+    orderParts.push(`£${totalPrice.toFixed(2)}`);
+
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(orderParts.join(", "))}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     setSubmitted(true);
     clearCart();
   };
@@ -116,7 +128,7 @@ const Checkout = () => {
                     <div>
                       <p className="font-display text-3xl text-foreground">Thanks — we have your order.</p>
                       <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                        The takeaway will text you with order confirmation and an estimated delivery time. Please prepare cash for the delivery driver.
+                        Your WhatsApp order has been prepared for sending. The takeaway will text you with order confirmation and an estimated delivery time. Please prepare cash for the delivery driver.
                       </p>
                     </div>
                   </div>
