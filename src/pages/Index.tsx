@@ -6,14 +6,28 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { TakeawayHeader } from "@/components/TakeawayHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { bundleMeals } from "@/data/bundles";
 import { useTakeaway } from "@/context/TakeawayContext";
 import { categories, menu, popularityReference } from "@/data/menu";
 import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { unlocked, cart, addToCart, removeFromCart, unlockWithCode, totalItems } = useTakeaway();
   const [activeCategory, setActiveCategory] = useState<(typeof categories)[number] | "All">("All");
+  const [vipDialogOpen, setVipDialogOpen] = useState(false);
+  const [vipInput, setVipInput] = useState("");
+  const [vipError, setVipError] = useState<string | null>(null);
 
   const filteredMenu = useMemo(() => {
     if (activeCategory === "All") return menu;
@@ -21,13 +35,27 @@ const Index = () => {
   }, [activeCategory]);
 
   const handleLockedAdd = () => {
-    const code = window.prompt("Enter your VIP code to unlock ordering:", "");
-    if (code === null) return;
+    setVipInput("");
+    setVipError(null);
+    setVipDialogOpen(true);
+  };
 
+  const submitVipCode = () => {
+    const code = vipInput.trim().slice(0, 64);
+    if (!code) {
+      setVipError("Please enter a code.");
+      return;
+    }
     if (unlockWithCode(code)) {
-      window.alert("VIP unlocked — all Add to cart buttons are now available.");
+      setVipDialogOpen(false);
+      setVipInput("");
+      setVipError(null);
+      toast({
+        title: "VIP unlocked",
+        description: "All Add to cart buttons are now available.",
+      });
     } else {
-      window.alert("That VIP code is not recognised. Please try again.");
+      setVipError("That VIP code is not recognised. Please try again.");
     }
   };
 
