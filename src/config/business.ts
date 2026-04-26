@@ -14,13 +14,6 @@
 
 export const WHATSAPP_NUMBER = "447766628285" as const;
 
-/**
- * VIP code is intentionally a soft, client-side gate (a marketing
- * gimmick). It is NOT a real security control — anyone viewing the
- * source code can read it. Treat it as a fun unlock, not a password.
- */
-export const VIP_ACCESS_CODE = "VIPtest" as const;
-
 /** Hard cap on quantity per item to prevent abuse / spam orders. */
 export const MAX_QTY_PER_ITEM = 50;
 
