@@ -114,17 +114,22 @@ export const TakeawayProvider = ({ children }: { children: React.ReactNode }) =>
     const unlockWithCode = async (code: string): Promise<boolean> => {
       if (typeof code !== "string") return false;
       const trimmed = code.trim().slice(0, 64);
-      
+
       try {
         const response = await fetch("/api/verify-vip", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code: trimmed }),
         });
-        
-        const data = await response.json() as { valid?: boolean };
-        const success = data.valid === true;
-        
+
+        const data = (await response.json()) as { valid?: boolean; error?: string };
+        const success = response.ok && data.valid === true;
+
+        if (!response.ok) {
+          console.error("VIP verification failed:", response.status, data.error ?? "Unknown error");
+          return false;
+        }
+
         if (success) {
           setUnlocked(true);
         }
