@@ -138,7 +138,7 @@ const Index = () => {
               <div>
                 <p className="font-display text-3xl">VIP ordering gate</p>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                  Add to cart stays greyed out until the VIP code is entered. Use <span className="font-medium text-foreground">VIPtest</span> to unlock every dish instantly.
+                  Add to cart stays greyed out until a valid VIP code is entered. Tap any locked button to enter your code.
                 </p>
               </div>
             </div>
