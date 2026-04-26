@@ -1,10 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { bundleMeals } from "@/data/bundles";
 import { menu } from "@/data/menu";
-import { MAX_CART_LINES, MAX_QTY_PER_ITEM, VIP_ACCESS_CODE } from "@/config/business";
-
-// Re-export for convenience (existing imports keep working).
-export { VIP_ACCESS_CODE };
+import { MAX_CART_LINES, MAX_QTY_PER_ITEM } from "@/config/business";
 
 type CartItem = {
   dishId: string;
@@ -14,7 +11,7 @@ type CartItem = {
 type TakeawayContextValue = {
   unlocked: boolean;
   cart: CartItem[];
-  unlockWithCode: (code: string) => boolean;
+  unlockWithCode: (code: string) => Promise<boolean>;
   addToCart: (dishId: string) => void;
   removeFromCart: (dishId: string) => void;
   clearCart: () => void;
@@ -109,13 +106,33 @@ export const TakeawayProvider = ({ children }: { children: React.ReactNode }) =>
 
     const clearCart = () => setCart([]);
 
-    const unlockWithCode = (code: string) => {
+    /**
+     * Validate VIP code by calling the serverless API.
+     * The actual password is stored server-side in environment variables,
+     * never exposed to the browser.
+     */
+    const unlockWithCode = async (code: string): Promise<boolean> => {
       if (typeof code !== "string") return false;
-      // Trim + length cap to avoid weird inputs.
       const trimmed = code.trim().slice(0, 64);
-      const success = trimmed === VIP_ACCESS_CODE;
-      if (success) setUnlocked(true);
-      return success;
+      
+      try {
+        const response = await fetch("/api/verify-vip", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: trimmed }),
+        });
+        
+        const data = await response.json() as { valid?: boolean };
+        const success = data.valid === true;
+        
+        if (success) {
+          setUnlocked(true);
+        }
+        return success;
+      } catch (error) {
+        console.error("Failed to verify VIP code:", error);
+        return false;
+      }
     };
 
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
