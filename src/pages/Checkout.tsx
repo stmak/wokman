@@ -6,14 +6,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { bundleMeals } from "@/data/bundles";
 import { menu } from "@/data/menu";
-import { useTakeaway, VIP_ACCESS_CODE } from "@/context/TakeawayContext";
-import { useState } from "react";
+import { useTakeaway } from "@/context/TakeawayContext";
+import { CHECKOUT_COOLDOWN_MS, VIP_ACCESS_CODE, WHATSAPP_NUMBER } from "@/config/business";
+import { useRef, useState } from "react";
+import { toast } from "@/hooks/use-toast";
 
-const WHATSAPP_NUMBER = "447766628285";
+/**
+ * Allow only digits, letters, spaces and a small set of safe punctuation
+ * in dish names before sending to WhatsApp. Defends against weird unicode
+ * being injected via tampered local data.
+ */
+function sanitizeForMessage(value: string, maxLen = 80): string {
+  return value
+    .replace(/[\r\n\t]+/g, " ")
+    .replace(/[^\p{L}\p{N}\s.,&'()£$+\-/]/gu, "")
+    .trim()
+    .slice(0, maxLen);
+}
 
 const Checkout = () => {
   const { cart, totalPrice, clearCart, removeFromCart, addToCart } = useTakeaway();
   const [submitted, setSubmitted] = useState(false);
+  const lastClickRef = useRef(0);
 
   const cartLines = cart
     .map((item) => {
@@ -21,23 +35,47 @@ const Checkout = () => {
       if (!dish) return null;
       return { ...dish, quantity: item.quantity, lineTotal: dish.price * item.quantity };
     })
-    .filter(Boolean);
+    .filter((line): line is NonNullable<typeof line> => line !== null);
 
   const handleCheckout = () => {
-    const orderParts = [VIP_ACCESS_CODE];
+    // Anti-spam: ignore rapid repeat clicks.
+    const now = Date.now();
+    if (now - lastClickRef.current < CHECKOUT_COOLDOWN_MS) return;
+    lastClickRef.current = now;
+
+    if (!cartLines.length) return;
+
+    // Validate WhatsApp number format defensively in case it ever changes.
+    if (!/^\d{8,15}$/.test(WHATSAPP_NUMBER)) {
+      toast({
+        title: "Order could not be sent",
+        description: "The takeaway phone number is misconfigured. Please contact the shop.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const orderParts: string[] = [sanitizeForMessage(VIP_ACCESS_CODE, 32)];
 
     cartLines.forEach((dish) => {
-      orderParts.push(dish.name, String(dish.quantity));
+      const name = sanitizeForMessage(dish.name);
+      const qty = Math.min(Math.max(Math.floor(dish.quantity), 1), 50);
+      if (name) {
+        orderParts.push(name, String(qty));
+      }
     });
 
-    orderParts.push(`£${totalPrice.toFixed(2)}`);
+    const safeTotal = Number.isFinite(totalPrice) ? totalPrice : 0;
+    orderParts.push(`£${safeTotal.toFixed(2)}`);
 
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(orderParts.join(", "))}`;
+    // Final length cap on the whole message.
+    const message = orderParts.join(", ").slice(0, 1500);
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
     setSubmitted(true);
     clearCart();
 
     const popup = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-
     if (!popup || popup.closed || typeof popup.closed === "undefined") {
       window.location.assign(whatsappUrl);
     }
