@@ -283,6 +283,55 @@ const Index = () => {
         </section>
       </main>
       <SiteFooter />
+
+      <Dialog open={vipDialogOpen} onOpenChange={setVipDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-3xl">Enter your VIP code</DialogTitle>
+            <DialogDescription>
+              Add to cart unlocks once a valid VIP code is entered.
+            </DialogDescription>
+          </DialogHeader>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitVipCode();
+            }}
+            className="space-y-4"
+          >
+            <div className="space-y-2">
+              <Label htmlFor="vip-code">VIP code</Label>
+              <Input
+                id="vip-code"
+                type="text"
+                inputMode="text"
+                autoComplete="off"
+                autoFocus
+                maxLength={64}
+                value={vipInput}
+                onChange={(e) => {
+                  setVipInput(e.target.value);
+                  if (vipError) setVipError(null);
+                }}
+                placeholder="Your VIP code"
+              />
+              {vipError ? (
+                <p className="text-sm text-destructive" role="alert">
+                  {vipError}
+                </p>
+              ) : null}
+            </div>
+            <DialogFooter className="gap-2 sm:gap-2">
+              <Button type="button" variant="outline" onClick={() => setVipDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="hero">
+                Unlock
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
