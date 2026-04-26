@@ -40,22 +40,30 @@ const Index = () => {
     setVipDialogOpen(true);
   };
 
-  const submitVipCode = () => {
+  const [vipSubmitting, setVipSubmitting] = useState(false);
+
+  const submitVipCode = async () => {
     const code = vipInput.trim().slice(0, 64);
     if (!code) {
       setVipError("Please enter a code.");
       return;
     }
-    if (unlockWithCode(code)) {
-      setVipDialogOpen(false);
-      setVipInput("");
-      setVipError(null);
-      toast({
-        title: "VIP unlocked",
-        description: "All Add to cart buttons are now available.",
-      });
-    } else {
-      setVipError("That VIP code is not recognised. Please try again.");
+    setVipSubmitting(true);
+    try {
+      const ok = await unlockWithCode(code);
+      if (ok) {
+        setVipDialogOpen(false);
+        setVipInput("");
+        setVipError(null);
+        toast({
+          title: "VIP unlocked",
+          description: "All Add to cart buttons are now available.",
+        });
+      } else {
+        setVipError("That VIP code is not recognised. Please try again.");
+      }
+    } finally {
+      setVipSubmitting(false);
     }
   };
 
@@ -295,7 +303,7 @@ const Index = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              submitVipCode();
+              void submitVipCode();
             }}
             className="space-y-4"
           >
@@ -322,11 +330,11 @@ const Index = () => {
               ) : null}
             </div>
             <DialogFooter className="gap-2 sm:gap-2">
-              <Button type="button" variant="outline" onClick={() => setVipDialogOpen(false)}>
+              <Button type="button" variant="outline" onClick={() => setVipDialogOpen(false)} disabled={vipSubmitting}>
                 Cancel
               </Button>
-              <Button type="submit" variant="hero">
-                Unlock
+              <Button type="submit" variant="hero" disabled={vipSubmitting}>
+                {vipSubmitting ? "Checking…" : "Unlock"}
               </Button>
             </DialogFooter>
           </form>
