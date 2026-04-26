@@ -6,14 +6,28 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { TakeawayHeader } from "@/components/TakeawayHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { bundleMeals } from "@/data/bundles";
 import { useTakeaway } from "@/context/TakeawayContext";
 import { categories, menu, popularityReference } from "@/data/menu";
 import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { unlocked, cart, addToCart, removeFromCart, unlockWithCode, totalItems } = useTakeaway();
   const [activeCategory, setActiveCategory] = useState<(typeof categories)[number] | "All">("All");
+  const [vipDialogOpen, setVipDialogOpen] = useState(false);
+  const [vipInput, setVipInput] = useState("");
+  const [vipError, setVipError] = useState<string | null>(null);
 
   const filteredMenu = useMemo(() => {
     if (activeCategory === "All") return menu;
@@ -21,13 +35,27 @@ const Index = () => {
   }, [activeCategory]);
 
   const handleLockedAdd = () => {
-    const code = window.prompt("Enter your VIP code to unlock ordering:", "");
-    if (code === null) return;
+    setVipInput("");
+    setVipError(null);
+    setVipDialogOpen(true);
+  };
 
+  const submitVipCode = () => {
+    const code = vipInput.trim().slice(0, 64);
+    if (!code) {
+      setVipError("Please enter a code.");
+      return;
+    }
     if (unlockWithCode(code)) {
-      window.alert("VIP unlocked — all Add to cart buttons are now available.");
+      setVipDialogOpen(false);
+      setVipInput("");
+      setVipError(null);
+      toast({
+        title: "VIP unlocked",
+        description: "All Add to cart buttons are now available.",
+      });
     } else {
-      window.alert("That VIP code is not recognised. Please try again.");
+      setVipError("That VIP code is not recognised. Please try again.");
     }
   };
 
@@ -110,7 +138,7 @@ const Index = () => {
               <div>
                 <p className="font-display text-3xl">VIP ordering gate</p>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                  Add to cart stays greyed out until the VIP code is entered. Use <span className="font-medium text-foreground">VIPtest</span> to unlock every dish instantly.
+                  Add to cart stays greyed out until a valid VIP code is entered. Tap any locked button to enter your code.
                 </p>
               </div>
             </div>
@@ -255,6 +283,55 @@ const Index = () => {
         </section>
       </main>
       <SiteFooter />
+
+      <Dialog open={vipDialogOpen} onOpenChange={setVipDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-3xl">Enter your VIP code</DialogTitle>
+            <DialogDescription>
+              Add to cart unlocks once a valid VIP code is entered.
+            </DialogDescription>
+          </DialogHeader>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitVipCode();
+            }}
+            className="space-y-4"
+          >
+            <div className="space-y-2">
+              <Label htmlFor="vip-code">VIP code</Label>
+              <Input
+                id="vip-code"
+                type="text"
+                inputMode="text"
+                autoComplete="off"
+                autoFocus
+                maxLength={64}
+                value={vipInput}
+                onChange={(e) => {
+                  setVipInput(e.target.value);
+                  if (vipError) setVipError(null);
+                }}
+                placeholder="Your VIP code"
+              />
+              {vipError ? (
+                <p className="text-sm text-destructive" role="alert">
+                  {vipError}
+                </p>
+              ) : null}
+            </div>
+            <DialogFooter className="gap-2 sm:gap-2">
+              <Button type="button" variant="outline" onClick={() => setVipDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" variant="hero">
+                Unlock
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

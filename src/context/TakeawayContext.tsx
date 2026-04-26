@@ -1,6 +1,10 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { bundleMeals } from "@/data/bundles";
 import { menu } from "@/data/menu";
+import { MAX_CART_LINES, MAX_QTY_PER_ITEM, VIP_ACCESS_CODE } from "@/config/business";
+
+// Re-export for convenience (existing imports keep working).
+export { VIP_ACCESS_CODE };
 
 type CartItem = {
   dishId: string;
@@ -19,39 +23,76 @@ type TakeawayContextValue = {
 };
 
 const STORAGE_KEY = "golden-wok-takeaway-state";
-export const VIP_ACCESS_CODE = "VIPtest";
 
 const TakeawayContext = createContext<TakeawayContextValue | null>(null);
+
+/**
+ * Build a Set of every valid dish id once, so we can reject any
+ * tampered localStorage entries that reference unknown items.
+ */
+const validDishIds = new Set<string>([
+  ...menu.map((d) => d.id),
+  ...bundleMeals.map((b) => b.id),
+]);
+
+/** Strict validator for cart data loaded from localStorage. */
+function sanitizeCart(input: unknown): CartItem[] {
+  if (!Array.isArray(input)) return [];
+  const cleaned: CartItem[] = [];
+  for (const raw of input) {
+    if (!raw || typeof raw !== "object") continue;
+    const { dishId, quantity } = raw as Record<string, unknown>;
+    if (typeof dishId !== "string") continue;
+    if (!validDishIds.has(dishId)) continue;
+    if (typeof quantity !== "number" || !Number.isFinite(quantity)) continue;
+    const q = Math.min(Math.max(Math.floor(quantity), 1), MAX_QTY_PER_ITEM);
+    cleaned.push({ dishId, quantity: q });
+    if (cleaned.length >= MAX_CART_LINES) break;
+  }
+  return cleaned;
+}
 
 export const TakeawayProvider = ({ children }: { children: React.ReactNode }) => {
   const [unlocked, setUnlocked] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
     try {
-      const parsed = JSON.parse(raw) as { unlocked?: boolean; cart?: CartItem[] };
-      setUnlocked(Boolean(parsed.unlocked));
-      setCart(Array.isArray(parsed.cart) ? parsed.cart : []);
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as { unlocked?: unknown; cart?: unknown };
+      setUnlocked(parsed.unlocked === true); // strict equality, never trust truthy
+      setCart(sanitizeCart(parsed.cart));
     } catch {
-      window.localStorage.removeItem(STORAGE_KEY);
+      // Corrupt or tampered — wipe and start clean.
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        /* ignore storage errors (private mode, etc.) */
+      }
     }
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ unlocked, cart }));
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ unlocked, cart }));
+    } catch {
+      /* ignore storage quota / private mode errors */
+    }
   }, [unlocked, cart]);
 
   const value = useMemo(() => {
     const addToCart = (dishId: string) => {
+      if (!validDishIds.has(dishId)) return; // refuse unknown items
       setCart((current) => {
         const existing = current.find((item) => item.dishId === dishId);
         if (existing) {
+          if (existing.quantity >= MAX_QTY_PER_ITEM) return current;
           return current.map((item) =>
             item.dishId === dishId ? { ...item, quantity: item.quantity + 1 } : item,
           );
         }
+        if (current.length >= MAX_CART_LINES) return current;
         return [...current, { dishId, quantity: 1 }];
       });
     };
@@ -69,7 +110,10 @@ export const TakeawayProvider = ({ children }: { children: React.ReactNode }) =>
     const clearCart = () => setCart([]);
 
     const unlockWithCode = (code: string) => {
-      const success = code.trim() === VIP_ACCESS_CODE;
+      if (typeof code !== "string") return false;
+      // Trim + length cap to avoid weird inputs.
+      const trimmed = code.trim().slice(0, 64);
+      const success = trimmed === VIP_ACCESS_CODE;
       if (success) setUnlocked(true);
       return success;
     };
