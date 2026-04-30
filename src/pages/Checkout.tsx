@@ -25,7 +25,7 @@ function sanitizeForMessage(value: string, maxLen = 80): string {
 }
 
 const Checkout = () => {
-  const { cart, totalPrice, clearCart, removeFromCart, addToCart } = useTakeaway();
+  const { cart, totalPrice, clearCart, removeFromCart, addToCart, vipCode } = useTakeaway();
   const [submitted, setSubmitted] = useState(false);
   const lastClickRef = useRef(0);
 
@@ -55,7 +55,8 @@ const Checkout = () => {
       return;
     }
 
-    const orderParts: string[] = ["VIP order"];
+    const orderHeader = vipCode ? `VIP code: ${vipCode}` : "VIP bear";
+    const orderParts: string[] = [orderHeader];
 
     cartLines.forEach((dish) => {
       const name = sanitizeForMessage(dish.name);
