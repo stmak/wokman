@@ -55,7 +55,7 @@ const Checkout = () => {
       return;
     }
 
-    const orderParts: string[] = ["VIP bear"];
+    const orderParts: string[] = ["VIP order"];
 
     cartLines.forEach((dish) => {
       const name = sanitizeForMessage(dish.name);
