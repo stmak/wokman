@@ -28,15 +28,15 @@ export const TakeawayHeader = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/85">
+    <header className="fixed top-0 left-0 right-0 z-40 bg-transparent transition-colors duration-300">
       <div className="container flex h-24 items-center justify-between gap-6">
         <Link to="/" className="flex min-w-0 items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border/70 bg-panel p-2 shadow-lacquer">
-            <img src={logoMark} alt="Fortune House logo mark" width={1024} height={1024} className="h-full w-full object-contain" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-black/30 p-2 backdrop-blur-sm">
+            <img src={logoMark} alt="Fortune House logo mark" width={1024} height={1024} className="h-full w-full object-contain brightness-0 invert" />
           </div>
           <div className="min-w-0">
-            <p className="font-display text-xl text-foreground">Fortune House</p>
-            <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">Modern Chinese takeaway</p>
+            <p className="font-display text-xl text-white">Fortune House</p>
+            <p className="text-xs uppercase tracking-[0.28em] text-white/60">Modern Chinese takeaway</p>
           </div>
         </Link>
 
@@ -48,7 +48,7 @@ export const TakeawayHeader = () => {
               className={({ isActive }) =>
                 cn(
                   "inline-flex h-11 items-center rounded-full px-4 text-sm transition-all",
-                  isActive ? "bg-secondary text-secondary-foreground shadow-soft" : "text-muted-foreground hover:text-foreground",
+                  isActive ? "bg-white/15 text-white" : "text-white/60 hover:text-white",
                 )
               }
             >
@@ -58,15 +58,15 @@ export const TakeawayHeader = () => {
           <button
             type="button"
             onClick={goToMenu}
-            className="inline-flex h-11 items-center rounded-full px-4 text-sm text-muted-foreground transition-all hover:text-foreground"
+            className="inline-flex h-11 items-center rounded-full px-4 text-sm text-white/60 transition-all hover:text-white"
           >
             Menu
           </button>
         </nav>
 
         <div className="flex items-center gap-3">
-          <div className="hidden items-center gap-2 rounded-full border border-border/70 bg-panel px-4 py-2 text-sm text-muted-foreground lg:flex">
-            <Sparkles className={cn("h-4 w-4", unlocked ? "text-primary" : "text-muted-foreground")} />
+          <div className="hidden items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/60 backdrop-blur-sm lg:flex">
+            <Sparkles className={cn("h-4 w-4", unlocked ? "text-green-400" : "text-white/40")} />
             {unlocked ? "VIP access unlocked" : "VIP code required"}
           </div>
           <Button asChild variant="hero" size="lg" className="px-5">
