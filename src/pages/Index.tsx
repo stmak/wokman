@@ -75,8 +75,8 @@ const Index = () => {
         <section className="border-b border-border/60">
           <div className="container grid gap-10 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:py-16">
             <div className="space-y-6">
-              <p className="text-sm uppercase tracking-[0.32em] text-primary">Polar Bear • Pandaland</p>
-              <h1 className="max-w-2xl font-display text-5xl leading-tight text-foreground md:text-7xl">
+              <p className="text-sm uppercase tracking-[0.4em] text-primary">Polar Bear • Pandaland</p>
+              <h1 className="max-w-2xl font-display text-6xl leading-tight text-foreground md:text-8xl">
                 Refined silly takeaway classics, dressed for a polished Friday-night feast.
               </h1>
               <p className="max-w-xl text-lg leading-8 text-muted-foreground">
@@ -137,8 +137,8 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="border-b border-border/60 bg-secondary/35 py-8">
-          <div className="container grid gap-4 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+        <section className="border-b border-border/30 bg-secondary/35 py-12">
+          <div className="container grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-center">
             <div className="flex items-start gap-4">
               <div className="mt-1 rounded-full border border-primary/30 bg-highlight p-3 text-primary">
                 <ShieldCheck className="h-5 w-5" />
@@ -159,7 +159,7 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="border-b border-border/60 bg-secondary/20 py-12">
+        <section className="border-b border-border/30 bg-secondary/20 py-16">
           <div className="container space-y-6">
             <div>
               <p className="text-sm uppercase tracking-[0.32em] text-primary">Bundles</p>
@@ -202,7 +202,7 @@ const Index = () => {
           </div>
         </section>
 
-        <section id="menu" className="container py-12 md:py-16">
+        <section id="menu" className="container py-16 md:py-20">
           <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.32em] text-primary">Menu</p>
@@ -260,7 +260,7 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="border-t border-border/60 bg-secondary/30 py-12">
+        <section className="bg-secondary/30 py-16">
           <div className="container grid gap-6 lg:grid-cols-3">
             {[
               {

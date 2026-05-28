@@ -9,12 +9,12 @@ export default {
       center: true,
       padding: "1.5rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1440px",
       },
     },
     extend: {
       fontFamily: {
-        display: ["Cormorant Garamond", "serif"],
+        display: ["Playfair Display", "serif"],
         body: ["Manrope", "sans-serif"],
       },
       colors: {
@@ -76,12 +76,12 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        soft: "0 10px 30px -20px hsl(var(--foreground) / 0.22)",
-        lacquer: "0 24px 60px -28px hsl(var(--primary) / 0.45)",
-        glow: "0 16px 40px -24px hsl(var(--primary) / 0.6)",
+        soft: "0 10px 30px -20px hsl(var(--foreground) / 0.12)",
+        lacquer: "0 24px 60px -28px hsl(var(--primary) / 0.25)",
+        glow: "0 16px 40px -24px hsl(var(--primary) / 0.35)",
       },
       backgroundImage: {
-        "hero-overlay": "linear-gradient(180deg, transparent 12%, hsl(var(--foreground) / 0.72) 100%)",
+        "hero-overlay": "linear-gradient(180deg, transparent 20%, hsl(var(--background) / 0.95) 100%)",
       },
       keyframes: {
         "accordion-down": {

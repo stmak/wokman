@@ -29,7 +29,7 @@ export const TakeawayHeader = () => {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/85">
-      <div className="container flex h-20 items-center justify-between gap-6">
+      <div className="container flex h-24 items-center justify-between gap-6">
         <Link to="/" className="flex min-w-0 items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border/70 bg-panel p-2 shadow-lacquer">
             <img src={logoMark} alt="Fortune House logo mark" width={1024} height={1024} className="h-full w-full object-contain" />
