@@ -20,7 +20,7 @@ type BundleSeed = {
 export const bundleMeals: BundleSeed[] = [
   {
     id: "bundle-solo-feast",
-    name: "Golden Fortune Solo Feast",
+    name: "Fortune House Solo Feast",
     category: "Bundles",
     price: 15.8,
     ingredients: "Chicken chow mein, egg fried rice, vegetable spring rolls",
@@ -35,7 +35,7 @@ export const bundleMeals: BundleSeed[] = [
   },
   {
     id: "bundle-supper-for-two",
-    name: "Golden Fortune Supper for Two",
+    name: "Fortune House Supper for Two",
     category: "Bundles",
     price: 31.8,
     ingredients: "Aromatic crispy duck, pancakes, beef in black bean sauce, special fried rice, salt and pepper chips",
@@ -55,7 +55,7 @@ export const bundleMeals: BundleSeed[] = [
   },
   {
     id: "bundle-banquet-for-four",
-    name: "Golden Fortune Banquet for Four",
+    name: "Fortune House Banquet for Four",
     category: "Bundles",
     price: 63.5,
     ingredients: "Duck, sweet and sour chicken, shredded chilli beef, king prawn chow mein, egg fried rice, ribs, spring rolls",

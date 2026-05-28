@@ -13,7 +13,7 @@ export const SiteFooter = () => {
     <footer className="border-t border-border/60 bg-secondary/20">
       <div className="container flex flex-col gap-4 py-8 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="font-display text-2xl text-foreground">Golden Fortune</p>
+          <p className="font-display text-2xl text-foreground">Fortune House</p>
           <p className="text-sm text-muted-foreground">Modern Chinese takeaway for polished Friday-night feasts.</p>
         </div>
         <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">

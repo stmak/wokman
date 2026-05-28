@@ -1,6 +1,6 @@
 /**
  * ============================================================
- *  BUSINESS CONFIG — Golden Fortune
+ *  BUSINESS CONFIG — Fortune House
  * ============================================================
  *  ⚠️  IMPORTANT: This file controls where customer orders are sent.
  *
