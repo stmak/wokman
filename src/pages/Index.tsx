@@ -75,7 +75,7 @@ const Index = () => {
         <section className="border-b border-border/60">
           <div className="container grid gap-10 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:py-16">
             <div className="space-y-6">
-              <p className="text-sm uppercase tracking-[0.32em] text-primary">Red Panda • Pandaland</p>
+              <p className="text-sm uppercase tracking-[0.32em] text-primary">Polar Bear • Pandaland</p>
               <h1 className="max-w-2xl font-display text-5xl leading-tight text-foreground md:text-7xl">
                 Refined silly takeaway classics, dressed for a polished Friday-night feast.
               </h1>
