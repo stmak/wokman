@@ -75,9 +75,9 @@ const Index = () => {
         <section className="border-b border-border/60">
           <div className="container grid gap-10 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:py-16">
             <div className="space-y-6">
-              <p className="text-sm uppercase tracking-[0.32em] text-primary">Golden Fortune • United Kingdom</p>
+              <p className="text-sm uppercase tracking-[0.32em] text-primary">Red Panda • Pandaland</p>
               <h1 className="max-w-2xl font-display text-5xl leading-tight text-foreground md:text-7xl">
-                Refined Chinese takeaway classics, dressed for a polished Friday-night feast.
+                Refined silly takeaway classics, dressed for a polished Friday-night feast.
               </h1>
               <p className="max-w-xl text-lg leading-8 text-muted-foreground">
                 A tasteful, traditional menu of British Chinese takeaway favourites — from chow mein and crispy duck to sweet and sour classics, with 100 dishes ready for the table.
@@ -129,7 +129,7 @@ const Index = () => {
               <div className="absolute inset-0 bg-hero-overlay" />
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                 <div className="max-w-lg rounded-[1.75rem] border border-border/50 bg-card/80 p-5 shadow-lacquer backdrop-blur-md">
-                  <p className="text-sm uppercase tracking-[0.3em] text-primary">House favourites</p>
+                  <p className="text-sm uppercase tracking-[0.3em] text-primary">Bear's favourites</p>
                   <p className="mt-3 font-display text-3xl text-foreground">Chow mein, crispy duck, sweet & sour classics and black bean favourites.</p>
                 </div>
               </div>
